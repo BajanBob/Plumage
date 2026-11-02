@@ -1,0 +1,6 @@
+{
+  "appId": "net.plumage.app",
+  "appName": "Plumage",
+  "webDir": "www",
+  "server": { "androidScheme": "https" }
+}

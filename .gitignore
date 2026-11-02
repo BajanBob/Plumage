@@ -1,0 +1,12 @@
+node_modules/
+android/
+ios/
+dist-win/
+out/
+build/
+Payload/
+*.apk
+*.ipa
+*.exe
+.DS_Store
+*.log

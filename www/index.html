@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark light">
+<title>Plumage</title>
+<style>
+  :root{ --bg:#0a0f14; --card:#111a22; --line:#22303c; --fg:#e7eef5; --muted:#8aa0b2; --accent:#ff8a1e; --accent2:#36c4ff; --ok:#39d98a; --bad:#ff5d5d; --mono:ui-monospace,Menlo,Consolas,monospace; --body:system-ui,-apple-system,Segoe UI,Roboto,sans-serif; }
+  :root[data-theme="light"]{ --bg:#eef3f7; --card:#fff; --line:#d3dde6; --fg:#10202c; --muted:#5e7488; }
+  *{box-sizing:border-box} html,body{margin:0}
+  body{background:var(--bg);color:var(--fg);font:15px/1.5 var(--body);padding:0 16px 40px;max-width:720px;margin:0 auto}
+  header{display:flex;align-items:center;gap:12px;padding:18px 2px 10px}
+  .logo{width:40px;height:40px;flex:none}
+  h1{font-size:21px;margin:0}
+  .sub{color:var(--muted);font-size:13px;margin:0}
+  .tabs{display:flex;gap:6px;margin:10px 0 14px;position:sticky;top:0;background:var(--bg);padding:8px 0;z-index:5}
+  .tabs button{flex:1;border:1px solid var(--line);background:transparent;color:var(--muted);border-radius:10px;padding:9px;font:600 14px var(--body);cursor:pointer}
+  .tabs button.on{border-color:var(--accent);color:var(--accent)}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:14px}
+  h2{font-size:15px;margin:0 0 10px;display:flex;align-items:center;gap:7px}
+  label{display:block;font-size:13px;color:var(--muted);margin:10px 0 5px}
+  input[type=text],input[type=password],textarea,select{width:100%;background:#0c141b;border:1px solid var(--line);border-radius:10px;color:var(--fg);padding:11px;font:14px var(--body)}
+  :root[data-theme="light"] input,:root[data-theme="light"] textarea,:root[data-theme="light"] select{background:#f4f8fb}
+  textarea{min-height:84px;resize:vertical}
+  .btn{border:1px solid var(--line);background:transparent;color:var(--fg);border-radius:10px;padding:11px 14px;font:600 14px var(--body);cursor:pointer}
+  .btn.go{background:var(--accent);border-color:var(--accent);color:#1a1205}
+  .btn.sm{padding:8px 11px;font-size:13px}
+  .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:10px}
+  .chips{display:flex;gap:8px;flex-wrap:wrap}
+  .chip{border:1px solid var(--line);border-radius:999px;padding:8px 13px;font:600 13px var(--body);color:var(--muted);cursor:pointer;user-select:none}
+  .chip.on{border-color:var(--accent2);color:var(--accent2);box-shadow:inset 0 0 0 1px var(--accent2)}
+  .help{display:inline-flex;width:16px;height:16px;border-radius:50%;border:1px solid var(--muted);color:var(--muted);font-size:11px;align-items:center;justify-content:center;cursor:help;position:relative;flex:none}
+  .help:hover::after,.help:focus::after{content:attr(data-help);position:absolute;left:50%;top:150%;transform:translateX(-50%);width:230px;background:#05232f;color:#dff2fb;border:1px solid var(--accent2);border-radius:8px;padding:8px 10px;font:400 12px/1.4 var(--body);z-index:20;box-shadow:0 8px 24px rgba(0,0,0,.5)}
+  .muted{color:var(--muted)} .small{font-size:12px}
+  .carrier{display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:10px;padding:10px;margin-top:8px}
+  .carrier .ic{font-size:20px} .carrier .nm{flex:1;font-size:13px;overflow-wrap:anywhere}
+  .out{white-space:pre-wrap;word-break:break-word;background:#0c141b;border:1px solid var(--line);border-radius:10px;padding:12px;margin-top:10px;font:13px var(--mono)}
+  .note{font-size:12px;color:var(--muted);margin-top:8px}
+  .ok{color:var(--ok)} .bad{color:var(--bad)}
+  footer{color:var(--muted);font-size:12px;text-align:center;margin-top:20px}
+</style>
+</head>
+<body>
+<header>
+  <svg class="logo" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#0e141c"/><line x1="32" y1="11" x2="32" y2="54" stroke="#88a" stroke-width="3"/><g stroke-width="3" stroke-linecap="round"><line x1="32" y1="18" x2="16" y2="12" stroke="#ff8a1e"/><line x1="32" y1="18" x2="48" y2="12" stroke="#36c4ff"/><line x1="32" y1="28" x2="15" y2="23" stroke="#ff8a1e"/><line x1="32" y1="28" x2="49" y2="23" stroke="#36c4ff"/><line x1="32" y1="38" x2="17" y2="34" stroke="#ff8a1e"/><line x1="32" y1="38" x2="47" y2="34" stroke="#36c4ff"/></g></svg>
+  <div><h1>Plumage</h1><p class="sub">Encrypt-then-scatter · hide a message across pictures, songs, text & video</p></div>
+</header>
+
+<div class="tabs">
+  <button data-tab="hide" class="on">Hide</button>
+  <button data-tab="reveal">Reveal</button>
+  <button data-tab="settings">Settings</button>
+</div>
+
+<!-- ============ HIDE ============ -->
+<section id="tab-hide">
+  <div class="card">
+    <h2>Your secret message <span class="help" tabindex="0" data-help="Typed here or attach a file (a voice note, photo, clip). It is encrypted before anything is hidden.">?</span></h2>
+    <textarea id="msg" placeholder="Type the message to hide…"></textarea>
+    <div class="row">
+      <label class="btn sm" for="attach" title="Attach a file to hide instead of (or with) text">📎 Attach a file</label>
+      <input type="file" id="attach" style="display:none">
+      <span class="small muted" id="attach-name"></span>
+    </div>
+    <label>Pass-phrase <span class="help" tabindex="0" data-help="The key. Share it with your recipient separately (in person, another channel). Without it the carriers are useless.">?</span></label>
+    <input type="password" id="pass" placeholder="A strong pass-phrase both sides know" autocomplete="off">
+  </div>
+
+  <div class="card">
+    <h2>Carriers to scatter across <span class="help" tabindex="0" data-help="The message is split so each carrier holds only a meaningless encrypted shard. A recipient needs ALL chosen carriers plus the pass-phrase.">?</span></h2>
+    <div class="chips" id="carrier-chips">
+      <span class="chip on" data-type="image" title="Hide a shard in a picture (invisible LSB)">🖼️ Picture</span>
+      <span class="chip on" data-type="audio" title="Hide a shard in a song/audio clip (WAV)">🎵 Audio</span>
+      <span class="chip on" data-type="text" title="Hide a shard in a line of text (zero-width characters)">📝 Text</span>
+      <span class="chip" data-type="video" title="Hide a shard appended to a video/binary file">🎬 Video</span>
+    </div>
+    <label>Cover source <span class="help" tabindex="0" data-help="Random library pulls innocent cover media (refreshed monthly). Or upload your own covers for each carrier.">?</span></label>
+    <select id="cover-src">
+      <option value="library">Random from library (auto)</option>
+      <option value="upload">Upload my own covers</option>
+    </select>
+    <div id="upload-covers" style="display:none"></div>
+    <div class="row"><button class="btn go" id="scatter">🪶 Scatter into carriers</button></div>
+    <div id="scatter-out"></div>
+  </div>
+</section>
+
+<!-- ============ REVEAL ============ -->
+<section id="tab-reveal" style="display:none">
+  <div class="card">
+    <h2>Reveal a hidden message <span class="help" tabindex="0" data-help="Add every carrier file you were sent and the pass-phrase. Missing one, or a wrong pass-phrase, fails safely.">?</span></h2>
+    <label>Carrier files (add all of them)</label>
+    <input type="file" id="reveal-files" multiple>
+    <div id="reveal-list"></div>
+    <label>Pass-phrase</label>
+    <input type="password" id="reveal-pass" placeholder="The shared pass-phrase" autocomplete="off">
+    <div class="row"><button class="btn go" id="reveal">🔓 Reveal message</button></div>
+    <div id="reveal-out"></div>
+  </div>
+</section>
+
+<!-- ============ SETTINGS ============ -->
+<section id="tab-settings" style="display:none">
+  <div class="card">
+    <h2>Options <span class="help" tabindex="0" data-help="Saved on this device only.">?</span></h2>
+    <label>Default carriers</label>
+    <div class="chips" id="default-chips">
+      <span class="chip" data-type="image">🖼️ Picture</span>
+      <span class="chip" data-type="audio">🎵 Audio</span>
+      <span class="chip" data-type="text">📝 Text</span>
+      <span class="chip" data-type="video">🎬 Video</span>
+    </div>
+    <label>Cover library URL <span class="help" tabindex="0" data-help="A catalog of free cover media (50 pictures, 50 songs, 50 texts, 50 videos) refreshed monthly. Leave blank to use built-in local covers.">?</span></label>
+    <input type="text" id="catalog-url" placeholder="https://plumage-catalog.you.workers.dev/catalog">
+    <div class="row"><button class="btn sm" id="refresh-lib" title="Fetch the latest cover library now">↻ Refresh library</button><span class="small muted" id="lib-state">built-in local covers</span></div>
+    <label>Theme</label>
+    <select id="theme"><option value="dark">Dark</option><option value="light">Light</option></select>
+    <div class="row"><button class="btn sm" id="save-settings">Save</button><span class="small muted" id="settings-msg"></span></div>
+  </div>
+  <div class="card">
+    <h2>About</h2>
+    <p class="small muted">Plumage encrypts your message (AES-256-GCM, key stretched from your pass-phrase), splits it, and hides each shard inside ordinary-looking media. Everything happens on your device — nothing is uploaded. This is privacy tooling for your own communications; use it lawfully. Plain LSB can be detected by steganalysis — treat it as concealment, with the encryption as the real protection.</p>
+  </div>
+</section>
+
+<footer>Plumage · on-device · AES-256 · no servers</footer>
+
+<script src="stealth.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+{
+  "name": "plumage",
+  "version": "1.0.0",
+  "description": "PLUMAGE — encrypt-then-scatter steganographic messenger: hide an encrypted message split across pictures, songs, text and video.",
+  "author": "BajanBob",
+  "license": "MIT",
+  "main": "electron/main.js",
+  "scripts": {
+    "cap:sync": "cap sync",
+    "electron": "electron .",
+    "dist:win": "electron-builder --win --publish never"
+  },
+  "dependencies": {
+    "@capacitor/android": "6.2.1",
+    "@capacitor/core": "6.2.1",
+    "@capacitor/ios": "6.2.1"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "6.2.1",
+    "electron": "33.2.1",
+    "electron-builder": "25.1.8"
+  },
+  "build": {
+    "appId": "net.plumage.app",
+    "productName": "Plumage",
+    "files": ["electron/**/*", "www/**/*"],
+    "directories": { "output": "dist-win", "buildResources": "resources" },
+    "win": { "target": [{ "target": "nsis", "arch": ["x64"] }], "icon": "resources/icon.png" },
+    "nsis": { "oneClick": false, "allowToChangeInstallationDirectory": true, "perMachine": false }
+  }
+}
